@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ကျွန်တော့်ရဲ့ Web</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 60px;
+      margin: 0;
+      min-height: 100vh;
+    }
+    h1 { color: #fff; font-size: 28px; }
+    p { color: #e0e0ff; }
+    button {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 30px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    button:active {
+      background: #e85555;
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+  <h1>မင်္ဂလာပါ ကမ္ဘာ!</h1>
+  <p>ဒါက ဖုန်းနဲ့ ရေးထားတဲ့ စာမျက်နှာပါ။</p>
+  <button onclick="sayHello()">နှိပ်ကြည့်ပါ</button>
+
+  <script>
+    function sayHello() {
+      alert("မင်္ဂလာပါ! Button အလုပ်လုပ်နေပါတယ် 🎉");
+    }
+  </script>
+</body>
+</html>
