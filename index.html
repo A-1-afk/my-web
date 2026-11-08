@@ -43,3 +43,140 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Transition Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: sans-serif;
+    overflow: hidden;
+    background: #0f172a;
+  }
+
+  /* စာမျက်နှာ တစ်ခုချင်းစီ */
+  .page {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    color: #fff;
+    /* စတင်ချိန် မမြင်ရအောင် */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  /* လက်ရှိ ပြသနေတဲ့ စာမျက်နှာ */
+  .page.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  /* ထွက်သွားတဲ့ စာမျက်နှာ (ဘယ်ဘက်ကို ရွေ့) */
+  .page.exit-left {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+
+  #page1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  #page2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  #page3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+
+  h1 { font-size: 2.5rem; }
+
+  /* ခလုတ် */
+  .btn {
+    padding: 14px 36px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  .btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+  .btn:active { transform: scale(0.95); }
+
+  /* ခလုတ်နှိပ်လိုက်ရင် ဖြစ်တဲ့ ripple animation */
+  .btn.ripple {
+    animation: pulse 0.4s ease;
+  }
+  @keyframes pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- စာမျက်နှာ ၁ -->
+  <section class="page active" id="page1">
+    <h1>စာမျက်နှာ ၁</h1>
+    <p>ခလုတ်ကို နှိပ်ကြည့်ပါ</p>
+    <button class="btn" data-target="page2">နောက်စာမျက်နှာသို့ →</button>
+  </section>
+
+  <!-- စာမျက်နှာ ၂ -->
+  <section class="page" id="page2">
+    <h1>စာမျက်နှာ ၂</h1>
+    <p>အလှည့်ကျ ပြောင်းသွားပါပြီ</p>
+    <button class="btn" data-target="page3">နောက်စာမျက်နှာသို့ →</button>
+  </section>
+
+  <!-- စာမျက်နှာ ၃ -->
+  <section class="page" id="page3">
+    <h1>စာမျက်နှာ ၃</h1>
+    <p>ပြန်သွားချင်ရင် နှိပ်ပါ</p>
+    <button class="btn" data-target="page1">← ပထမစာမျက်နှာသို့</button>
+  </section>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  let currentPage = document.querySelector('.page.active');
+
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // ခလုတ် animation
+      btn.classList.add('ripple');
+      setTimeout(() => btn.classList.remove('ripple'), 400);
+
+      const targetId = btn.dataset.target;
+      const targetPage = document.getElementById(targetId);
+      if (targetPage === currentPage) return;
+
+      // လက်ရှိ စာမျက်နှာကို ဘယ်ဘက်ကို ရွှေ့ပြီး ဖျောက်
+      currentPage.classList.remove('active');
+      currentPage.classList.add('exit-left');
+
+      // နောက်စာမျက်နှာကို ညာဘက်ကနေ ဝင်လာအောင်
+      targetPage.classList.remove('exit-left');
+      // reflow လုပ်ပြီးမှ active ထည့်ရင် transition အလုပ်လုပ်တယ်
+      void targetPage.offsetWidth;
+      targetPage.classList.add('active');
+
+      // ခဏကြာရင် exit-left class ကို ဖျောက်
+      setTimeout(() => {
+        currentPage.classList.remove('exit-left');
+      }, 600);
+
+      currentPage = targetPage;
+    });
+  });
+</script>
+</body>
+</html>
